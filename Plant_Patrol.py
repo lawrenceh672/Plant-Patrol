@@ -13,7 +13,7 @@ webcam = cv2.VideoCapture(0)
 #analyze plant image to determine Age, Health
 #update database with image, timestamp
 t1 = time.perf_counter()
-picture_interval = 1
+picture_interval = 3
 
 def onChangeInterval(self):
     print(cv2.getTrackbarPos('interval', 'image'))
@@ -21,11 +21,12 @@ def onChangeInterval(self):
 # Create a black image, a window
 img = np.zeros((300,512,3), np.uint8)
 cv2.namedWindow('image')
-cv2.createTrackbar('interval','image',0,60,onChangeInterval)
+cv2.createTrackbar('interval','image',picture_interval,60,onChangeInterval)
 
 #Make the Birdbuddy object to process the frames for information
 db = bbdb()
 bb = BirdBuddy(db, "Text XZ1")
+db.wipeDB()
 
 while True:
     try:
@@ -57,3 +58,5 @@ while True:
         print("Program ended.")
         cv2.destroyAllWindows()
         break
+#After the camera is off lets get input from the user to classify the captured changes in the image
+bb.classify("Text XZ1")

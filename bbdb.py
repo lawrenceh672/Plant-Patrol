@@ -125,17 +125,17 @@ class bbdb:
 		bbdb.conn.commit()
 		
 	def convertToBinaryData(self, filename):
-		   # Convert digital data to binary format
-		   with open(filename, 'rb') as file:
-			   binaryData = file.read()
-		   return binaryData		
-	   
+		# Convert digital data to binary format
+		with open(filename, 'rb') as file:
+			binaryData = file.read()
+		return binaryData		
+
 	def addTrackedObject(self, to, path):
 		print("Adding tracked object")
 		
 		sql = ''' INSERT INTO tracked_objects(id,path,x,y,w,h,frame_start,frame_end,xywh_track,image,classification) VALUES(?,?,?,?,?,?,?,?,?,?,?) '''
 		image_binary = to.image.tobytes()
-  
+
 		data_tuple =(to.ID, path, 
 					to.x, to.y, to.w, to.h,
 					to.frame_start,to.frame_end,
@@ -220,7 +220,7 @@ class bbdb:
 		df['area'] = df['w'] * df['h']
 		return df
 	
-	def getPossibles(self,path, img):
+	def getPossibles(self,path):
 		sql_query = 'select * from classifications where path = \'%s\';' % (path)
 		df = pd.read_sql_query(sql_query, bbdb.conn)
 		df = df['name']
